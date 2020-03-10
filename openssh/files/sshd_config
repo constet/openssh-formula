@@ -177,7 +177,7 @@
 {{ option('MACs', 'hmac-md5,hmac-sha1,umac-64@openssh.com,hmac-sha2-256,hmac-sha2-256-96,hmac-sha2-512,hmac-sha2-512-96,hmac-ripemd160,hmac-ripemd160@openssh.com,hmac-sha1-96,hmac-md5-96') }}
 
 {# Handling unknown in salt template options #}
-{%- for keyword in sshd_config.keys() %}
+{%- for keyword in sshd_config %}
   {#- Matches have to be at the bottom and should be handled differently -#}
   {%- if not keyword in processed_options and keyword != 'matches' -%}
 {#- send a blank default as it doesn't matter #}
@@ -188,8 +188,8 @@
 {# Handle matches last as they need to go at the bottom #}
 {%- if 'matches' in sshd_config %}
   {%- for match in sshd_config['matches'].values() %}
-Match {{ match['type'].keys()[0] }} {{ match['type'].values()[0] }}
-    {%- for keyword in match['options'].keys() %}
+Match {{ match['type'][0] }} {{ match['type'].values()[0] }}
+    {%- for keyword in match['options'] %}
     {{ render_option(keyword, '', config_dict=match['options']) }}
     {%- endfor %}
   {%- endfor %}
